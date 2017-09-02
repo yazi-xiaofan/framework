@@ -348,6 +348,13 @@ abstract class Connection
             return false;
         }
 
+        // 是否为存储过程调用
+        $procedure = in_array(strtolower(substr(trim($sql), 0, 4)), ['call', 'exec']);
+        
+        if($this->getConfig('type') === "sqlsrv"){
+            $sql = !$procedure ? $sql : trim(substr(trim($sql), 4));
+        }
+        
         // 记录SQL语句
         $this->queryStr = $sql;
         if ($bind) {
@@ -367,8 +374,6 @@ abstract class Connection
             if (empty($this->PDOStatement)) {
                 $this->PDOStatement = $this->linkID->prepare($sql);
             }
-            // 是否为存储过程调用
-            $procedure = in_array(strtolower(substr(trim($sql), 0, 4)), ['call', 'exec']);
             // 参数绑定
             if ($procedure) {
                 $this->bindParam($bind);
@@ -410,6 +415,13 @@ abstract class Connection
             return false;
         }
 
+        // 是否为存储过程调用
+        $procedure = in_array(strtolower(substr(trim($sql), 0, 4)), ['call', 'exec']);
+        
+        if($this->getConfig('type') === "sqlsrv"){
+            $sql = !$procedure ? $sql : trim(substr(trim($sql), 4));
+        }
+        
         // 记录SQL语句
         $this->queryStr = $sql;
         if ($bind) {
@@ -429,8 +441,6 @@ abstract class Connection
             if (empty($this->PDOStatement)) {
                 $this->PDOStatement = $this->linkID->prepare($sql);
             }
-            // 是否为存储过程调用
-            $procedure = in_array(strtolower(substr(trim($sql), 0, 4)), ['call', 'exec']);
             // 参数绑定
             if ($procedure) {
                 $this->bindParam($bind);
